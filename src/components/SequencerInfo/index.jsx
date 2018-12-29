@@ -22,7 +22,7 @@ export default ({
 						disabled={!sequencer || (typeof sequencer.arguments === 'number' && Object.values(inputs).length < sequencer.arguments)}
 						siz="sm">Next</Button>
 			</Col>
-			<Col md={1} className="m-1">
+			<Col md={1} className="m-1 mr-1">
 				<Button color="danger" outline
 						onClick={onResetBtnClick}
 						disabled={!emittedValues.length}
@@ -39,7 +39,7 @@ export default ({
 			</Col>}
 
 			{argsCount > 0 && (Array(argsCount).fill(undefined)).map((value, index) =>
-				<Col key={index} md={2} className="m-1"><Input
+				<Col key={index} md={2} className="m-1 ml-3"><Input
 					onChange={onInputChange}
 					className="args-input"
 					disabled={emittedValues.length}

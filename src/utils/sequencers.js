@@ -96,10 +96,8 @@ export function partialSumSeq(...args) {
 	}
 	if (!isNaN(args[this.index])) {
 		this.current += args[this.index];
-	} else if (this.current === 'end') {
-		return;
 	} else {
-		this.current = 'end';
+		throw new Error('Sequence is out of values');
 	}
 	const base = this;
 	return {

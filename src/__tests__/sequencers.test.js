@@ -52,7 +52,7 @@ describe('Test partialSumSeq generator: ', () => {
 		expect(gen.next()).toEqual(11);
 		expect(gen.next()).toEqual(13);
 		expect(gen.next()).toEqual(13);
-		expect(gen.next()).toEqual('end');
+		expect(gen.next()).toThrow();
 	});
 });
 
@@ -60,6 +60,7 @@ describe('Test primeSeq generator: ', () => {
 	it('Generates expected sequence', () => {
 		const gen = generator(primeSeq);
 		expect(gen).toHaveProperty('next');
+		expect(gen.next()).toEqual(2);
 		expect(gen.next()).toEqual(3);
 		expect(gen.next()).toEqual(5);
 		expect(gen.next()).toEqual(7);
