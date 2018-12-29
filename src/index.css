@@ -1,0 +1,23 @@
+@import '~bootstrap/dist/css/bootstrap.css';
+
+.content-inner {
+    min-height: 80vh;
+    overflow-y: auto;
+}
+
+.content-inner .info-bar {
+    height: 40%;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+.content-inner .current-sequencer {
+    box-shadow: inset 0 0 2px #111;
+    border-radius: 4px;
+    overflow-y: auto;
+}
+
+.args-input{
+    font-size: 12px;
+}
+
