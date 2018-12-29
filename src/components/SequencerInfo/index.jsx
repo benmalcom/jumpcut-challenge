@@ -25,7 +25,7 @@ export default ({
 				<Button color="danger" outline
 						onClick={onResetBtnClick}
 						disabled={!emittedValues.length}
-						siz="sm">Reset</Button>
+						siz="sm">Reset Sequencer</Button>
 			</Col>
 			<Col md={4} className="ml-3 mt-1">
 				<select name="pipelineId" disabled={emittedValues.length} value={currentPipelineId}
