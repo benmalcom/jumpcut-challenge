@@ -42,3 +42,33 @@ export function rangeSeq(start, step) {
 		}
 	}
 }
+
+export function primeSeq() {
+	if (!this.nextPrime) {
+		this.nextPrime = 2;
+	}
+	let notPrime = true;
+	let n = this.nextPrime + 1;
+	const base = this;
+	return {
+		next() {
+			while (notPrime) {
+				let i = 2;
+				let isPrime = true;
+				while (i < n) {
+					if (n % i === 0) {
+						isPrime = false;
+						break;
+					}
+					i++;
+				}
+				if (isPrime) {
+					base.nextPrime = n;
+					break;
+				}
+				n++;
+			}
+			return base.nextPrime;
+		}
+	}
+}
