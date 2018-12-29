@@ -27,3 +27,18 @@ export function fibonacciSeq() {
 		}
 	}
 }
+
+export function rangeSeq(start, step) {
+	if (!this.start || !this.step) {
+		this.start = start;
+		this.step = step;
+	}
+	const base = this;
+	return {
+		next() {
+			const value = base.start;
+			base.start = base.start + base.step;
+			return value;
+		}
+	}
+}
