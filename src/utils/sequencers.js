@@ -8,6 +8,9 @@ export function factorialSeq() {
 		next() {
 			base.total = base.total * base.n++;
 			return base.total
+		}, reset() {
+			base.total = 1;
+			base.n = 1;
 		}
 	}
 }
@@ -24,7 +27,12 @@ export function fibonacciSeq() {
 			base.a = base.a + base.b;
 			base.b = base.temp;
 			return base.a;
+		},
+		reset() {
+			base.a = 1;
+			base.b = 0;
 		}
+
 	}
 }
 
@@ -39,7 +47,11 @@ export function rangeSeq(start, step) {
 			const value = base.start;
 			base.start = base.start + base.step;
 			return value;
+		}, reset() {
+			base.start = start;
+			base.step = step;
 		}
+
 	}
 }
 
@@ -69,7 +81,11 @@ export function primeSeq() {
 				n++;
 			}
 			return base.nextPrime;
+		},
+		reset() {
+			base.nextPrime = 2;
 		}
+
 	}
 }
 
@@ -90,6 +106,9 @@ export function partialSumSeq(...args) {
 		next() {
 			base.index++;
 			return base.current;
+		}, reset() {
+			base.index = 0;
+			base.current = 0;
 		}
 	}
 }
@@ -99,18 +118,25 @@ export function generator(sequencerFunction, ...rest) {
 	return {
 		next() {
 			return func(...rest).next()
+		}, reset() {
+			func(...rest).reset();
 		}
+
 	}
 }
 
-export function pipedSeq(sequencer, ...args){
+export function pipedSeq(sequencer, ...args) {
 	const boundSequencer = sequencer.bind(sequencer);
 	const updatedSequencer = (pipe) => {
 		return () => {
 			return {
 				next() {
 					return pipe(boundSequencer(...args).next());
+				}, reset() {
+					boundSequencer(...args).reset();
+					pipe(boundSequencer(...args), true);
 				}
+
 			}
 		};
 	};
