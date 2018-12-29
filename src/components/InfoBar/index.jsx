@@ -13,6 +13,10 @@ const InfoBar =  ({ sequencer }) => {
 	</div>);
 };
 InfoBar.propTypes = {
-	sequencer: PropTypes.object.isRequired,
+	sequencer: PropTypes.object,
 };
+InfoBar.defaultProps = {
+	sequencer: null,
+};
+
 export default InfoBar;

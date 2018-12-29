@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, Badge, Button, Col, Input, Row } from 'reactstrap';
-import { pipelines } from '../../utils/sequencers';
+import { pipelinesConfig } from '../../utils/sequencers';
 
 export default ({
 					sequencer, emittedValues, onPipelineChange, currentPipelineId, argsCount, inputs,
@@ -32,7 +32,7 @@ export default ({
 						className="form-control"
 						onChange={onPipelineChange}>
 					<option>-- Select Pipeline --</option>
-					{pipelines.map((pipeline) => <option key={pipeline.id}
+					{pipelinesConfig.map((pipeline) => <option key={pipeline.id}
 														 value={pipeline.id}>{pipeline.label}</option>)}
 				</select>
 			</Col>
