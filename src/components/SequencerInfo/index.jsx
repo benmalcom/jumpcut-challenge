@@ -5,6 +5,7 @@ import { pipelinesConfig } from '../../utils/sequencers';
 export default ({
 					sequencer, emittedValues, onPipelineChange, currentPipelineId, argsCount, inputs,
 					onInputChange, hideMoreButton, onNextBtnClick, onMoreBtnClick, onResetBtnClick,
+					showPipelineSelector,
 				}) => {
 	return (<Col className="py-2">
 		<Row>
@@ -27,7 +28,7 @@ export default ({
 						disabled={!emittedValues.length}
 						siz="sm">Reset</Button>
 			</Col>
-			<Col md={4} className="ml-3 mt-1">
+			{showPipelineSelector && <Col md={4} className="ml-3 mt-1">
 				<select name="pipelineId" disabled={emittedValues.length} value={currentPipelineId}
 						className="form-control"
 						onChange={onPipelineChange}>
@@ -35,7 +36,7 @@ export default ({
 					{pipelinesConfig.map((pipeline) => <option key={pipeline.id}
 														 value={pipeline.id}>{pipeline.label}</option>)}
 				</select>
-			</Col>
+			</Col>}
 
 			{argsCount > 0 && (Array(argsCount).fill(undefined)).map((value, index) =>
 				<Col key={index} md={2} className="m-1"><Input

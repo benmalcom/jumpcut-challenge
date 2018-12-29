@@ -29,6 +29,8 @@ class Home extends Component {
 		super(props);
 		this.state = {
 			currentPipelineId: '',
+			showPipelineSelector: true,
+			currentPipeline: null,
 			inputs: {},
 			hideMoreButton: false,
 			argsCount: 0,
@@ -45,7 +47,7 @@ class Home extends Component {
 	static getDerivedStateFromProps(props, state) {
 		if (props.currentSequencer) {
 			return {
-				argsCount: state.argsCount || props.currentSequencer.arguments
+				argsCount: state.argsCount || props.currentSequencer.arguments,
 			};
 		}
 		return null;
@@ -53,7 +55,13 @@ class Home extends Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (prevProps && prevProps.currentSequencer && prevProps.currentSequencer.id !== this.props.currentSequencer.id) {
-			this.setState({inputs: {}, argsCount: this.props.currentSequencer.arguments});
+			this.setState({
+				inputs: {},
+				argsCount: this.props.currentSequencer.arguments,
+				showPipelineSelector: true,
+				currentPipeline: null,
+				currentPipelineId: '',
+			});
 		}
 	}
 
@@ -64,13 +72,15 @@ class Home extends Component {
 	onNewSequencer(sequencerId) {
 		this.props.clearEmittedValues();
 		this.props.activateSequencer(sequencerId);
-		this.setState({currentPipelineId: ''});
 	}
 
 	handlePipelineSelect(e) {
 		const value = e.target.value;
 		if (value) {
-			this.setState({currentPipelineId: value});
+			const pipeline = pipelinesConfig.find((item) => item.id === Number(value));
+			if (pipeline) {
+				this.setState({currentPipelineId: value, showPipelineSelector: false, currentPipeline: pipeline});
+			}
 		}
 	}
 
@@ -123,7 +133,10 @@ class Home extends Component {
 	}
 
 	render() {
-		const {currentPipelineId, hideMoreButton, argsCount, inputs} = this.state;
+		const {
+			currentPipelineId, hideMoreButton, argsCount,
+			inputs, showPipelineSelector, currentPipeline
+		} = this.state;
 		return (
 			<Col md={9} className="mx-auto mt-5 app">
 				<Row>
@@ -134,13 +147,14 @@ class Home extends Component {
 					</Col>
 					<Col md="9" className="content-inner">
 						<div className="info-bar">
-							<InfoBar sequencer={this.props.currentSequencer}/>
+							<InfoBar currentPipeline={currentPipeline} sequencer={this.props.currentSequencer}/>
 						</div>
 						<div className="current-sequencer">
 							{this.props.currentSequencer && <SequencerInfo
 								argsCount={argsCount}
 								inputs={inputs}
 								currentPipelineId={currentPipelineId}
+								showPipelineSelector={showPipelineSelector}
 								onPipelineChange={this.handlePipelineSelect}
 								onNextBtnClick={() => this.onNextBtnClick()}
 								onMoreBtnClick={this.addMoreInput}

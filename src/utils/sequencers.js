@@ -57,7 +57,7 @@ export function rangeSeq(start, step) {
 
 export function primeSeq() {
 	if (!this.nextPrime) {
-		this.nextPrime = 2;
+		this.nextPrime = 1;
 	}
 	let notPrime = true;
 	let n = this.nextPrime + 1;
