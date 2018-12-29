@@ -93,3 +93,12 @@ export function partialSumSeq(...args) {
 		}
 	}
 }
+
+export function generator(sequencerFunction, ...rest) {
+	const func = sequencerFunction.bind(sequencerFunction);
+	return {
+		next() {
+			return func(...rest).next()
+		}
+	}
+}
