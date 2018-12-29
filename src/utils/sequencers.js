@@ -156,6 +156,23 @@ export function pipedSeq(sequencer, ...args) {
 		}
 	}
 }
+export const accumulator = () => {
+	let sum = 0;
+	return function (value, reset = false) {
+		if (reset) {
+			sum = 0;
+		} else {
+			sum += value;
+		}
+		return sum;
+	}
+};
+
+export const isEven = () => {
+	return function (value) {
+		return {status: (value % 2 === 0), number: value};
+	}
+};
 
 const sequencersConfig = [
 	{id: 1, label: 'Factorial', functionRef: factorialSeq, arguments: 0, dynamicArgs: false,},
