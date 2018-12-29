@@ -11,3 +11,19 @@ export function factorialSeq() {
 		}
 	}
 }
+
+export function fibonacciSeq() {
+	if (!this.a || !this.b) {
+		this.a = 1;
+		this.b = 0;
+	}
+	const base = this;
+	return {
+		next() {
+			base.temp = base.a;
+			base.a = base.a + base.b;
+			base.b = base.temp;
+			return base.a;
+		}
+	}
+}
