@@ -174,6 +174,11 @@ export const isEven = () => {
 	}
 };
 
+export const pipelinesConfig = [
+	{id: 1, label: 'Accumulator', pipelineRef: accumulator},
+	{id: 2, label: 'isEven', pipelineRef: isEven},
+];
+
 const sequencersConfig = [
 	{id: 1, label: 'Factorial', functionRef: factorialSeq, arguments: 0, dynamicArgs: false,},
 	{id: 2, label: 'Fibonacci', functionRef: fibonacciSeq, arguments: 0, dynamicArgs: false,},
