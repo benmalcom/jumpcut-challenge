@@ -102,3 +102,28 @@ export function generator(sequencerFunction, ...rest) {
 		}
 	}
 }
+
+
+const sequencersConfig = [
+	{id: 1, label: 'Factorial', functionRef: factorialSeq, arguments: 0, dynamicArgs: false,},
+	{id: 2, label: 'Fibonacci', functionRef: fibonacciSeq, arguments: 0, dynamicArgs: false,},
+	{
+		id: 3,
+		label: 'Range',
+		functionRef: rangeSeq,
+		arguments: 2,
+		dynamicArgs: false,
+		instruction: 'Enter your function arguments in the inputs below and press the Next button below repeatedly to generate sequence of values'
+	},
+	{id: 4, label: 'Prime', functionRef: primeSeq, arguments: 0, dynamicArgs: false,},
+	{
+		id: 5,
+		label: 'Partial Sum',
+		functionRef: partialSumSeq,
+		arguments: 5,
+		dynamicArgs: true,
+		instruction: 'Enter your function arguments in the inputs below and press the Next button below repeatedly to generate sequence of values'
+	},
+];
+
+export default sequencersConfig;
