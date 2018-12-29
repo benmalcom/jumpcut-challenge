@@ -72,3 +72,24 @@ export function primeSeq() {
 		}
 	}
 }
+
+export function partialSumSeq(...args) {
+	if (!this.index || !this.current) {
+		this.index = 0;
+		this.current = 0;
+	}
+	if (!isNaN(args[this.index])) {
+		this.current += args[this.index];
+	} else if (this.current === 'end') {
+		return;
+	} else {
+		this.current = 'end';
+	}
+	const base = this;
+	return {
+		next() {
+			base.index++;
+			return base.current;
+		}
+	}
+}
