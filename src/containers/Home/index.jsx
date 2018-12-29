@@ -28,8 +28,6 @@ class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentPipelineId: '',
-			showPipelineSelector: true,
 			currentPipeline: null,
 			inputs: {},
 			hideMoreButton: false,
@@ -42,6 +40,7 @@ class Home extends Component {
 		this.hideMoreButton = this.hideMoreButton.bind(this);
 		this.addMoreInput = this.addMoreInput.bind(this);
 		this.handleResetClick = this.handleResetClick.bind(this);
+		this.resetSequencerInputs = this.resetSequencerInputs.bind(this);
 	}
 
 	static getDerivedStateFromProps(props, state) {
@@ -54,15 +53,19 @@ class Home extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		console.log('prevState ', prevState.currentPipeline);
+		console.log('this.state ', this.state.currentPipeline);
 		if (prevProps && prevProps.currentSequencer && prevProps.currentSequencer.id !== this.props.currentSequencer.id) {
 			this.setState({
 				inputs: {},
 				argsCount: this.props.currentSequencer.arguments,
-				showPipelineSelector: true,
 				currentPipeline: null,
-				currentPipelineId: '',
 			});
 		}
+	}
+
+	resetSequencerInputs() {
+		this.setState({currentPipeline: null, inputs: {}});
 	}
 
 	addMoreInput() {
@@ -71,15 +74,21 @@ class Home extends Component {
 
 	onNewSequencer(sequencerId) {
 		this.props.clearEmittedValues();
+		this.resetSequencerInputs();
 		this.props.activateSequencer(sequencerId);
 	}
 
 	handlePipelineSelect(e) {
+		const {emittedValues} = this.props;
 		const value = e.target.value;
 		if (value) {
 			const pipeline = pipelinesConfig.find((item) => item.id === Number(value));
 			if (pipeline) {
-				this.setState({currentPipelineId: value, showPipelineSelector: false, currentPipeline: pipeline});
+				this.setState({currentPipeline: pipeline}, () => {
+					if (emittedValues && emittedValues.length) {
+						this.props.clearEmittedValues();
+					}
+				});
 			}
 		}
 	}
@@ -100,27 +109,24 @@ class Home extends Component {
 
 	onNextBtnClick(resetGenerator = false) {
 		const {currentSequencer} = this.props;
-		const {currentPipelineId} = this.state;
+		const {currentPipeline} = this.state;
 		let functionArgs = [];
 		if (Object.values(this.state.inputs).length) {
 			functionArgs = Object.values(this.state.inputs);
 		}
 		let gen = null;
-		if (currentPipelineId) {
-			const pipeline = pipelinesConfig.find((item) => item.id === Number(currentPipelineId));
-			if (pipeline) {
-				const _pipedSeq = pipedSeq.call(pipedSeq, currentSequencer.functionRef, ...functionArgs)
-					.pipeline(pipeline.pipelineRef)
-					.invoke();
-				gen = generator(_pipedSeq);
-			}
+		if (currentPipeline) {
+			const _pipedSeq = pipedSeq.call(pipedSeq, currentSequencer.functionRef, ...functionArgs)
+				.pipeline(currentPipeline.pipelineRef)
+				.invoke();
+			gen = generator(_pipedSeq);
 		} else {
 			gen = generator(currentSequencer.functionRef, ...functionArgs);
 		}
 		if (resetGenerator) {
 			gen.reset();
 			this.props.clearEmittedValues();
-			this.setState({currentPipelineId: '', inputs: {}});
+			this.resetSequencerInputs();
 		} else {
 			const value = gen.next();
 			this.props.updateEmittedValues(value);
@@ -134,8 +140,7 @@ class Home extends Component {
 
 	render() {
 		const {
-			currentPipelineId, hideMoreButton, argsCount,
-			inputs, showPipelineSelector, currentPipeline
+			hideMoreButton, argsCount, inputs, currentPipeline
 		} = this.state;
 		return (
 			<Col md={9} className="mx-auto mt-5 app">
@@ -153,8 +158,7 @@ class Home extends Component {
 							{this.props.currentSequencer && <SequencerInfo
 								argsCount={argsCount}
 								inputs={inputs}
-								currentPipelineId={currentPipelineId}
-								showPipelineSelector={showPipelineSelector}
+								currentPipeline={currentPipeline}
 								onPipelineChange={this.handlePipelineSelect}
 								onNextBtnClick={() => this.onNextBtnClick()}
 								onMoreBtnClick={this.addMoreInput}

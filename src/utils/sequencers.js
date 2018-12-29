@@ -83,7 +83,7 @@ export function primeSeq() {
 			return base.nextPrime;
 		},
 		reset() {
-			base.nextPrime = 2;
+			base.nextPrime = 1;
 		}
 
 	}
@@ -141,11 +141,15 @@ export function pipedSeq(sequencer, ...args) {
 	const base = this;
 	return {
 		pipeline(pipe) {
-			if (!base.pipe) {
-				base.pipe = pipe();
+			let current = null;
+			if(base.pipe){
+				current = base.pipe.name;
 			}
-			if (!base.modifiedSeq) {
-				base.modifiedSeq = updatedSequencer(base.pipe)
+			if (!base.pipe || base.pipe.name !== pipe.name) {
+				base.pipe = pipe;
+			}
+			if (!base.modifiedSeq || current !== pipe.name) {
+				base.modifiedSeq = updatedSequencer(base.pipe())
 			}
 			return this;
 		},

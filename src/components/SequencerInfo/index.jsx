@@ -3,9 +3,8 @@ import { Alert, Badge, Button, Col, Input, Row } from 'reactstrap';
 import { pipelinesConfig } from '../../utils/sequencers';
 
 export default ({
-					sequencer, emittedValues, onPipelineChange, currentPipelineId, argsCount, inputs,
+					sequencer, emittedValues, onPipelineChange, currentPipeline, argsCount, inputs,
 					onInputChange, hideMoreButton, onNextBtnClick, onMoreBtnClick, onResetBtnClick,
-					showPipelineSelector,
 				}) => {
 	return (<Col className="py-2">
 		<Row>
@@ -28,15 +27,15 @@ export default ({
 						disabled={!emittedValues.length}
 						siz="sm">Reset</Button>
 			</Col>
-			{showPipelineSelector && <Col md={4} className="ml-3 mt-1">
-				<select name="pipelineId" disabled={emittedValues.length} value={currentPipelineId}
+			<Col md={4} className="ml-3 mt-1">
+				<select name="pipelineId" disabled={emittedValues.length} value={(currentPipeline && currentPipeline.id) || ''}
 						className="form-control"
 						onChange={onPipelineChange}>
 					<option>-- Select Pipeline --</option>
 					{pipelinesConfig.map((pipeline) => <option key={pipeline.id}
 														 value={pipeline.id}>{pipeline.label}</option>)}
 				</select>
-			</Col>}
+			</Col>
 
 			{argsCount > 0 && (Array(argsCount).fill(undefined)).map((value, index) =>
 				<Col key={index} md={2} className="m-1 ml-3"><Input
