@@ -16,5 +16,5 @@ and ready to be served by a tiny express server.
 
 #### Assumptions/Decisions
 * I used `reactstrap` in the frontend to add some bootstrap styling
-* In the frontend, I implemented added a `reset` button which resets the current sequence generators to it's beginning,
-so I added a reset function to each (piped)sequencers and to the generator, also the accumulator function was modified a little for this.
+* In the frontend, I added a `reset` button which resets the current sequence generators to it's beginning.
+also, I added a reset function to each (piped)sequencers and to the generator, also the accumulator function was modified a little for this.
