@@ -103,6 +103,33 @@ export function generator(sequencerFunction, ...rest) {
 	}
 }
 
+export function pipedSeq(sequencer, ...args){
+	const boundSequencer = sequencer.bind(sequencer);
+	const updatedSequencer = (pipe) => {
+		return () => {
+			return {
+				next() {
+					return pipe(boundSequencer(...args).next());
+				}
+			}
+		};
+	};
+	const base = this;
+	return {
+		pipeline(pipe) {
+			if (!base.pipe) {
+				base.pipe = pipe();
+			}
+			if (!base.modifiedSeq) {
+				base.modifiedSeq = updatedSequencer(base.pipe)
+			}
+			return this;
+		},
+		invoke() {
+			return base.modifiedSeq;
+		}
+	}
+}
 
 const sequencersConfig = [
 	{id: 1, label: 'Factorial', functionRef: factorialSeq, arguments: 0, dynamicArgs: false,},
