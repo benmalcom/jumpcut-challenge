@@ -7,11 +7,11 @@ export const activateSequencer = (sequencerId) => ({
 	payload: { sequencerId },
 });
 
-export const updateEmittedSequence = (value) => ({
+export const updateEmittedValues = (value) => ({
 	type: UPDATE_EMITTED_SEQUENCE,
 	payload: { value },
 });
 
-export const clearEmittedSequence = () => ({
+export const clearEmittedValues = () => ({
 	type: CLEAR_EMITTED_SEQUENCE,
 });

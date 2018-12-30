@@ -5,15 +5,18 @@ import PropTypes from 'prop-types';
 import SideBar from '../../components/SideBar';
 import InfoBar from '../../components/InfoBar';
 import SequencerInfo from '../../components/SequencerInfo';
-import { activateSequencer, updateEmittedSequence, clearEmittedSequence } from '../../redux/actions/sequencer';
+import { activateSequencer, updateEmittedValues, clearEmittedValues } from '../../redux/actions/sequencer';
 import sequencers, { generator, pipedSeq, pipelinesConfig } from '../../utils/sequencers';
 
 const propTypes = {
 	activateSequencer: PropTypes.func.isRequired,
-	clearEmittedSequence: PropTypes.func.isRequired,
+	clearEmittedValues: PropTypes.func.isRequired,
 	currentSequencer: PropTypes.object,
 	currentId: PropTypes.number,
-	emittedValues: PropTypes.arrayOf(PropTypes.number),
+	emittedValues: PropTypes.oneOfType([
+		PropTypes.arrayOf(PropTypes.number),
+		PropTypes.arrayOf(PropTypes.object),
+	]),
 };
 const defaultProps = {
 	currentSequencer: null,
@@ -59,7 +62,7 @@ class Home extends Component {
 	}
 
 	onNewSequencer(sequencerId) {
-		this.props.clearEmittedSequence();
+		this.props.clearEmittedValues();
 		this.props.activateSequencer(sequencerId);
 		this.setState({currentPipelineId: ''});
 	}
@@ -104,19 +107,19 @@ class Home extends Component {
 		} else {
 			gen = generator(currentSequencer.functionRef, ...functionArgs);
 		}
-		if(resetGenerator) {
+		if (resetGenerator) {
 			gen.reset();
-			this.props.clearEmittedSequence();
+			this.props.clearEmittedValues();
+			this.setState({currentPipelineId: '', inputs: {}});
 		} else {
 			const value = gen.next();
-			this.props.updateEmittedSequence(value);
+			this.props.updateEmittedValues(value);
 			this.hideMoreButton();
 		}
 	}
 
 	handleResetClick() {
 		this.onNextBtnClick(true);
-		this.setState({currentPipelineId: '', inputs: {}});
 	}
 
 	render() {
@@ -165,8 +168,8 @@ const stateProps = (state) => ({
 
 const dispatchProps = {
 	activateSequencer,
-	clearEmittedSequence,
-	updateEmittedSequence,
+	clearEmittedValues,
+	updateEmittedValues,
 };
 
 export default connect(stateProps, dispatchProps)(Home);
