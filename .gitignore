@@ -65,3 +65,6 @@ typings/
 # ignore local build directory
 /build
 /src/__tests__/components/__snapshots__
+.DS_Store
+.idea/
+
