@@ -6,6 +6,7 @@ Project structure has a main `src/` folder containing the business logic of the 
 also with `__tests__` folder. Also I implemented tiny unit tests for some components' basic rendering and the sequencers.
 
 #### Running The Code
+* Clone project into any directory
 * Run `npm install` in project directory to install dependencies
 * Run `npm run dev` to start up the webpack dev server, a mini web server by webpack to serve applications
 * For tests, a basic unit test with jest/enzyme is implemented, run `npm test`
