@@ -3,16 +3,18 @@ export function factorialSeq() {
 		this.n = 1;
 		this.total = 1;
 	}
-	const base = this;
-	return {
-		next() {
+	this.total = this.total * this.n++;
+	return this.total;
+	// return {
+		/*next() {
 			base.total = base.total * base.n++;
 			return base.total
-		}, reset() {
+		}, */
+		/*reset() {
 			base.total = 1;
 			base.n = 1;
-		}
-	}
+		}*/
+	// }
 }
 
 export function fibonacciSeq() {
@@ -115,7 +117,8 @@ export function generator(sequencerFunction, ...rest) {
 	const func = sequencerFunction.bind(sequencerFunction);
 	return {
 		next() {
-			return func(...rest).next()
+
+			return func(...rest);
 		}, reset() {
 			func(...rest).reset();
 		}
